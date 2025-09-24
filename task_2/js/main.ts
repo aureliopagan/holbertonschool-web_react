@@ -51,10 +51,44 @@ interface DirectorInterface {
     }
   }
   
+  // Create isDirector function (type predicate)
+  function isDirector(employee: Director | Teacher): employee is Director {
+    return employee instanceof Director;
+  }
+  
+  // Create executeWork function
+  function executeWork(employee: Director | Teacher): string {
+    if (isDirector(employee)) {
+      return employee.workDirectorTasks();
+    } else {
+      return employee.workTeacherTasks();
+    }
+  }
+  
+  // String literal type for Subjects
+  type Subjects = "Math" | "History";
+  
+  // Function to teach class based on subject
+  function teachClass(todayClass: Subjects): string {
+    if (todayClass === "Math") {
+      return "Teaching Math";
+    } else {
+      return "Teaching History";
+    }
+  }
+  
   // Test the createEmployee function
   console.log(createEmployee(200));   // Should return Teacher instance
   console.log(createEmployee(1000));  // Should return Director instance
   console.log(createEmployee('$500')); // Should return Director instance
+  
+  // Test the executeWork function
+  console.log(executeWork(createEmployee(200)));   // "Getting to work"
+  console.log(executeWork(createEmployee(1000)));  // "Getting to director tasks"
+  
+  // Test the teachClass function
+  console.log(teachClass('Math'));     // "Teaching Math"
+  console.log(teachClass('History'));  // "Teaching History"
   
   // Additional tests to verify the methods work
   const employee1 = createEmployee(200);
@@ -65,3 +99,7 @@ interface DirectorInterface {
   
   const employee3 = createEmployee('$500');
   console.log(employee3.getCoffeeBreak()); // "Getting a coffee break"
+  
+  // Test isDirector function
+  console.log(isDirector(employee1)); // false (Teacher)
+  console.log(isDirector(employee2)); // true (Director)
